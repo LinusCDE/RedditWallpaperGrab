@@ -2,7 +2,6 @@ RedditWallpaperGrab
 ===================
 
 ## Description
---------------
 
 This tool can download images from any given subreddit. This tool already works quite well, but there are still a lot of things to do.
 
@@ -13,7 +12,6 @@ Some subreddits I personally recommend for Wallpapers:
 - [r/EarthPorn](https://www.reddit.com/r/EarthPorn/)
 
 ## Features and Goals
----------------------
 
 ### Features / Done:
 - [x] Authentificate with the Reddit-API (via praw) using
@@ -38,7 +36,6 @@ Some subreddits I personally recommend for Wallpapers:
 - [ ] Polish this README
 
 ## Installation
----------------
 
 To use this you'll need following dependencies
 

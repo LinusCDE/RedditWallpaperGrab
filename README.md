@@ -66,8 +66,8 @@ Should be the same as on Linux. I personally never had a Apple Device. As packag
 
 #### On Windows
 
-- You need to install the latest Release of [Python 3](https://www.python.org/downloads/windows/) which should already ship with pip as I heard.
-- Then you should be able to do pretty much the same as for Linux with the [Git Bash for Window](https://git-for-windows.github.io/).
+- You need to install the latest Release of [Python 3](https://www.python.org/downloads/windows/) which should already ship with pip.
+- Then you should be able to do pretty much the same as for Linux with the [Git Bash for Windows](https://git-for-windows.github.io/).
 
 I personally do not have a Windows PC. You may need to search in the Internet for how to get the dependencies working in Windows.
 

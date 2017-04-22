@@ -19,7 +19,7 @@ import wallpaper_tool
 USER_AGENT = 'redditGrab-Python'
 ARGS = None
 
-# Currntly download file. Saved here to delete it when process interrupted
+# Currently downloading file. Path stored here to delete it when process interrupted
 DOWNLOADING_FILE_PATH = None
 
 SUPPORTED_IMAGE_EXTENSIONS = [
@@ -268,7 +268,7 @@ def main():
     # Min-Size
     ap.add_argument(
         '-m', '--min-size', default=None, metavar='WIDTHxHEIGHT',
-        help='''Minimum Size to be used.
+        help='''Minimum Size to be allowed for using.
          Any lower resolutions will be skipped.''')
 
     # -------------------------------------------------------------------------

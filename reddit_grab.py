@@ -137,12 +137,22 @@ def download_reddit_images():
     except Exception:
         raise Exception('Could not create folder!')
 
-    # Get Submissions and looping through it
+    # Get Submissions
     if ARGS.verbose:
         print('Getting submissions...')
-    for num, submission in enumerate(getattr(
-            reddit.get_subreddit(ARGS.subreddit),
-            'get_' + ARGS.submission_order)(limit=ARGS.limit)):
+
+    # Subreddit_Function to get submissions in requested order
+    subreddit_func = None
+    # Get subreddit_func independent of praw-version
+    if hasattr(reddit, 'get_subreddit'):  # For older versions of praw
+        subreddit = reddit.get_subreddit(ARGS.subreddit)
+        subreddit_func = getattr(subreddit, 'get_' + ARGS.submission_order)
+    else:  # Never versions of praw
+        subreddit = reddit.subreddit(ARGS.subreddit)
+        subreddit_func = getattr(subreddit, ARGS.submission_order)
+
+    # Loop through submissions
+    for num, submission in enumerate(subreddit_func(limit=ARGS.limit)):
 
         # Print current submission-title
         print('[%d] %s' % ((num+1), submission.title))

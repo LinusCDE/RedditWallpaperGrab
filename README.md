@@ -26,12 +26,12 @@ Some subreddits I personally recommend for Wallpapers:
 ### Upcoming:
 - [x] Setting a minimum resolution or use desktop resolution to prevent unsharp wallpapers
 - [ ] Better filenames
-- [ ] Support for praw 4.4.0
+- [x] Support for praw 4.4.0
 
 ### Goals for the future:
 - [ ] Automatic Resolution-Detection with cossplatform and multi monitor support (Currently defaults to FullHD)
 - [ ] Add creds for the creators of the images in a stylish way
-- [ ] OAuth2 with praw ([Source](https://praw.readthedocs.io/en/v3.6.0/pages/oauth.html))
+- [ ] OAuth2 with praw ([Source](https://praw.readthedocs.io/en/v4.4.0/getting_started/authentication.html))
 - [ ] Make this into a pip package
 - [ ] Polish this README
 
@@ -41,11 +41,11 @@ To use this you'll need following dependencies
 
 ### Dependencies
 - Python 3 or higher
-- [praw 3.6.1](https://pypi.python.org/pypi/praw/3.6.1) (4.4.0 support is planned)
+- [praw](https://pypi.python.org/pypi/praw/)
 - [argparse](https://docs.python.org/3/library/argparse.html)
-- [ Pillow / PIL ](https://github.com/python-pillow/Pillow)
+- [Pillow / PIL](https://github.com/python-pillow/Pillow)
 
-All sources should be available throuh pip3. Please keep in mind to use **praw 3.6.1** newer versions will probably fail
+*All sources should be available throuh pip3.*
 
 ### Installation steps
 
@@ -54,7 +54,7 @@ All sources should be available throuh pip3. Please keep in mind to use **praw 3
 Install *git*, *python3* and *pip3* with package manager of your distro. You may have those already on your system.
 
     $ cd ~ # Or any folder you want
-    $ pip3 install argparse praw==3.6.1 pillow
+    $ pip3 install argparse praw pillow
     $ git clone https://github.com/LinusCDE98/RedditWallpaperGrab.git
     $ cd RedditWallpaperGrab
     $ chmod +x reddit_grab.py

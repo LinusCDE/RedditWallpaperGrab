@@ -283,19 +283,19 @@ def main():
     if (ARGS.client_id == '') is not (ARGS.client_secret == ''):
         if ARGS.client_id == '':
             complain_and_exit(
-                'If --client-secret is given, --client-id is also requiered')
+                'If --client-secret is given, --client-id is also required')
         else:
             complain_and_exit(
-                'If --client-id is given, --client-secret is also requiered')
+                'If --client-id is given, --client-secret is also required')
 
     # if username given but password missing or vice versa
     if (ARGS.username == '') is not (ARGS.password == ''):
         if ARGS.username == '':
             complain_and_exit(
-                'If --password is given, --username is also requiered')
+                'If --password is given, --username is also required')
         else:
             complain_and_exit(
-                'If --username is given, --password is also requiered')
+                'If --username is given, --password is also required')
 
     # Validate whether user-credentials or client-data is given
     if not ARGS.client_id and not ARGS.username:

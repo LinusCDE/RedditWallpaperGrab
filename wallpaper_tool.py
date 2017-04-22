@@ -5,6 +5,7 @@ from PIL import ImageFilter
 
 
 class ImageTooSmallExecption (Exception):
+    '''Raised if image is smaller than allowed (defined via --min-size)'''
     pass
 
 
@@ -37,7 +38,9 @@ def offset(frame_size, image_size):
     return (x_offset, y_offset)
 
 
-def create_wallpaper(img_input_path, img_output_path, ta_size, allow_blur, min_size=None):
+def create_wallpaper(
+        img_input_path, img_output_path, ta_size, allow_blur, min_size=None):
+    '''Convert image to fit the target size and can check for minimum size'''
     img = Image.open(img_input_path)
 
     bg = Image.new('RGBA', (ta_size), (0, 0, 0, 0))

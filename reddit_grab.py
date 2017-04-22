@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 '''
-RedditGrab - Downloads images from reddit to use as wallpaper-slideshow.
+RedditGrab - Downloads images from reddit to use as wallpaper slideshow.
 
-Please specify either a username and a password
-or a client-id and a client-secret.
+Please specify either username + password
+or a client-id + client-secret.
 '''
+
+# Code-Design:
+# This code respects PEP 8 Conventions and uses snake_case for naming
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
@@ -42,7 +45,7 @@ AVAILABLE_SUBMISSION_ORDERS = [
 
 
 def cancelled(sigid, event):
-    '''SIGINT caught; process getting terminated or the user typed CTRL+C'''
+    '''SIGINT caught; process gets terminated (e.g. user typed CTRL+C)'''
     if DOWNLOADING_FILE_PATH:
         os.remove(DOWNLOADING_FILE_PATH)
     print('Cancelled!')
@@ -50,7 +53,7 @@ def cancelled(sigid, event):
 
 
 def supported(filename):
-    '''Checks if a file is supported'''
+    '''Check if a file is supported'''
     sp = filename.split('.')
     if len(sp) < 2:
         return False
@@ -59,12 +62,12 @@ def supported(filename):
 
 
 def format(path, image_format):
-    '''Replaces extension to a given one.'''
+    '''Replace extension to a given one'''
     return str().join(path.split('.')[:-1]) + '.' + image_format
 
 
 def convert_image(img_file, dest_file, resolution, allow_blur):
-    '''Starting conversion. Checks for problems.'''
+    '''Start conversion. Checks for problems'''
     failMessage = None  # Message if conversion failed
 
     try:
@@ -87,7 +90,7 @@ def convert_image(img_file, dest_file, resolution, allow_blur):
 
 
 def download(url, dest):
-    '''Downloads a file from given url to a file (dest)'''
+    '''Download a file from given url to a file (dest)'''
     global DOWNLOADING_FILE_PATH
 
     # Removing https to avoid SSL-Warnings
@@ -114,9 +117,9 @@ def download(url, dest):
 
 
 def download_reddit_images():
-    '''Downloads images from reddit. Options read from ARGS'''
+    '''Download images from reddit. Options are read from the variable ARGS'''
 
-    # Creating Readdit-Instance if not jet
+    # Create Reddit-Instance
     reddit = praw.Reddit(
         client_id=ARGS.client_id,
         client_secret=ARGS.client_secret,
@@ -124,7 +127,7 @@ def download_reddit_images():
         username=ARGS.username,
         password=ARGS.password)
 
-    # (Try) to create the given directory if not existing
+    # (Try to) create defined given directory if not existing
     try:
         folder = ARGS.output_folder
         if not os.path.exists(folder) or not os.path.isdir(folder):
@@ -134,7 +137,7 @@ def download_reddit_images():
     except Exception:
         raise Exception('Could not create folder!')
 
-    # Getting Submissions and looping through it
+    # Get Submissions and looping through it
     if ARGS.verbose:
         print('Getting submissions...')
     for num, submission in enumerate(getattr(
@@ -149,15 +152,15 @@ def download_reddit_images():
         if imageUrl is None or imageUrl == '':
             continue
 
-        # Gathering the filename out of url
+        # Gather the filename out of url
         fileName = imageUrl.split('/')[-1]
         if '?' in fileName:
             fileName = fileName.split('?')[0]
 
-        # Declearing temporary destination
+        # Declare temporary destination
         tmpdest = ARGS.output_folder + os.sep
         tmpdest += fileName + '.temp.' + str(random.randint(0, 1000000))
-        # Declearing destination
+        # Declare destination
         dest = folder + os.sep + format(fileName, ARGS.format)
 
         # Ignore if image was already downloaded
@@ -166,24 +169,29 @@ def download_reddit_images():
                 print('File \'%s\' already exists! Skipping...' % dest)
             continue
 
-        # Cancel download if url does not end with extension
-        # given in SUPPORTED_IMAGE_EXTENSIONS
+        # Cancel download if url does not end with supported extension
         if not supported(fileName):
             if ARGS.verbose:
                 print('File \'%s\' is not an Image! Skipping...' % fileName)
             continue
-        # Downloading file
+        # Download file
         download(imageUrl, dest if ARGS.raw else tmpdest)
         if (not ARGS.raw) and ARGS.verbose:
             print('Convert image to Wallpaper...')
-        # Converting file if allowed
+        # Convert file if allowed
         if not ARGS.raw:
             size = tuple(int(val) for val in ARGS.size.split('x'))
             convert_image(tmpdest, dest, size, not ARGS.no_blur)
 
 
+def complain_and_exit(message):
+    '''Print message in unix-style and exit with exit-code 1'''
+    print('%s: %s' % (sys.argv[0], message), file=sys.stderr)
+    exit(1)
+
+
 def main():
-    '''Main function for handling CLI-arguments and starting conversion'''
+    '''Handle cli arguments and start conversion'''
     global ARGS
 
     # Add SIGINT-Handler ( = CTRL+C )
@@ -300,7 +308,7 @@ def main():
     # Validate whether user-credentials or client-data is given
     if not ARGS.client_id and not ARGS.username:
         complain_and_exit(
-            '''An authentification for Reddit is needed to use this program.
+            '''An authentication for Reddit is needed to use this program.
             Either you auth with --username and --password as regular login
             or use a --client-id and a --client-secret which you can obtain
             from https://www.reddit.com/prefs/apps/ .'''.replace(2*' ', ''))
@@ -349,10 +357,9 @@ def main():
     except Exception as ex:
         complain_and_exit('Error: %s' % str(ex))
 
+    # Exit point
 
-def complain_and_exit(message):
-    print('%s: %s' % (sys.argv[0], message), file=sys.stderr)
-    exit(1)
 
 if __name__ == '__main__':
+    # Entry point
     main()

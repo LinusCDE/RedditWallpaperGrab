@@ -4,6 +4,10 @@ from PIL import Image
 from PIL import ImageFilter
 
 
+class ImageTooSmallExecption (Exception):
+    pass
+
+
 def resize_image(image, width=-1, height=-1):
     '''Resize image; auto-determine size for missing dimension'''
     if width == -1 and height == -1:
@@ -33,11 +37,15 @@ def offset(frame_size, image_size):
     return (x_offset, y_offset)
 
 
-def create_wallpaper(img_input_path, img_output_path, ta_size, allow_blur):
+def create_wallpaper(img_input_path, img_output_path, ta_size, allow_blur, min_size=None):
     img = Image.open(img_input_path)
 
     bg = Image.new('RGBA', (ta_size), (0, 0, 0, 0))
     width, height = img.size
+
+    if min_size and (width < min_size[0] or height < min_size[1]):
+        raise ImageTooSmallExecption()
+
     pasted_image, blurred_background = None, None
 
     if width > height:  # Landscape

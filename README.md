@@ -24,7 +24,7 @@ Some subreddits I personally recommend for Wallpapers:
 - [x] Configurable with command line arguments
 
 ### Upcoming:
-- [ ] Setting a minimum resolution or use desktop resolution to prevent unsharp wallpapers
+- [x] Setting a minimum resolution or use desktop resolution to prevent unsharp wallpapers
 - [ ] better filenames
 - [ ] support for praw 4.4.0
 

@@ -65,14 +65,21 @@ def format(path, image_format):
 
 def convert_image(img_file, dest_file, resolution, allow_blur):
     '''Starting conversion. Checks for problems.'''
+    failMessage = None  # Message if conversion failed
+
     try:
         # Start image conversion
-        wallpaper_tool.create_wallpaper(img_file, dest_file, resolution, allow_blur)
+        wallpaper_tool.create_wallpaper(img_file, dest_file, resolution, allow_blur, min_size=tuple(int(val) for val in ARGS.min_size.split('x')))
         # Remove TempFile
         os.remove(img_file)
+    except wallpaper_tool.ImageTooSmallExecption:
+        failMessage = 'Image too small!'
     except Exception:
+        failMessage = 'Conversion failed.'
+
+    if failMessage:
+        print(failMessage, file=sys.stderr)
         # Deleting Images when failed
-        print('Conversion failed. Deleting Image', file=sys.stderr)
         if os.path.exists(img_file):
             os.remove(img_file)
         if os.path.exists(dest_file):
@@ -258,6 +265,12 @@ def main():
          All supported formats: %s'''
         % str(', ').join(SUPPORTED_IMAGE_EXTENSIONS))
 
+    # Min-Size
+    ap.add_argument(
+        '-m', '--min-size', default=None, metavar='WIDTHxHEIGHT',
+        help='''Minimum Size to be used.
+         Any lower resolutions will be skipped.''')
+
     # -------------------------------------------------------------------------
 
     # Parsing argments into global ARGS
@@ -315,6 +328,18 @@ def main():
             raise ValueError('Too small')
     except ValueError:
         complain_and_exit('--size does contain invalid dimensions')
+
+    # Validate --min-size
+    if 'x' not in ARGS.min_size:
+        complain_and_exit('Format for --min-size is WIDTHxHEIGHT')
+
+    try:
+        # Check if dims are two numbers; if not ValueError will be raised
+        width, height = (int(val) for val in ARGS.min_size.split('x'))
+        if width < 00 or height < 0:
+            raise ValueError('Size can not be negative')
+    except ValueError:
+        complain_and_exit('--min-size does contain invalid dimensions')
 
     # -------------------------------------------------------------------------
 
